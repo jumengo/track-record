@@ -1,0 +1,113 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #f5f2ff;
+  background-color: #120f1a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 12%, #2f2445 0%, transparent 42%),
+    radial-gradient(circle at 88% 18%, #31205f 0%, transparent 36%),
+    linear-gradient(180deg, #191423 0%, #100d17 100%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1.8rem 1.2rem 2.2rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.app-header p {
+  margin: 0.55rem 0 0;
+  color: #c6c0d8;
+}
+
+.app-grid {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.scene-shell {
+  border: 1px solid #3e3554;
+  border-radius: 18px;
+  min-height: 540px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(4, 4, 9, 0.4);
+}
+
+.info-panel {
+  border: 1px solid #3e3554;
+  border-radius: 18px;
+  background: color-mix(in srgb, #201a2b 92%, #000 8%);
+  box-shadow: 0 18px 50px rgba(4, 4, 9, 0.32);
+  padding: 1.25rem 1.15rem;
+}
+
+.panel-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  color: #c0b6de;
+}
+
+.info-panel h2 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+}
+
+.panel-description {
+  margin-top: 0.85rem;
+  color: #ddd8ea;
+}
+
+.panel-list {
+  margin-top: 0.95rem;
+  margin-bottom: 0;
+  padding-left: 1rem;
+  color: #f2effb;
+}
+
+.panel-list li {
+  margin-bottom: 0.55rem;
+}
+
+.panel-blurb {
+  margin-top: 1rem;
+  color: #bcb4cf;
+  font-style: italic;
+}
+
+@media (max-width: 960px) {
+  .app-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scene-shell {
+    min-height: 460px;
+  }
+}

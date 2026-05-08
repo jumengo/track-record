@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#e7ddff" />
+      <stop offset="100%" stop-color="#9775ff" />
+    </radialGradient>
+  </defs>
+  <circle cx="128" cy="128" r="120" fill="url(#g)" />
+  <circle cx="128" cy="128" r="36" fill="#261d3f" />
+  <text x="128" y="122" text-anchor="middle" fill="#261d3f" font-family="Inter, Arial" font-size="20" font-weight="700">EXPERIENCE</text>
+  <text x="128" y="146" text-anchor="middle" fill="#261d3f" font-family="Inter, Arial" font-size="14">TIMELINE CUT</text>
+</svg>
