@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import type { VinylTrack } from '../data/vinylTracks'
@@ -12,46 +12,32 @@ type TurntableSceneProps = {
 }
 
 export function TurntableScene({ tracks, loadedTrackId, onLoadedTrackChange }: TurntableSceneProps) {
-  const [loadingTrackId, setLoadingTrackId] = useState<string | null>(null)
   const loadedTrack = useMemo(
     () => tracks.find((track) => track.id === loadedTrackId) ?? tracks[0],
     [loadedTrackId, tracks],
   )
 
-  useEffect(() => {
-    if (!loadingTrackId) return
-    const timer = window.setTimeout(() => {
-      onLoadedTrackChange(loadingTrackId)
-      setLoadingTrackId(null)
-    }, 640)
-    return () => window.clearTimeout(timer)
-  }, [loadingTrackId, onLoadedTrackChange])
-
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 5.5, 0.01], fov: 34 }}>
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [0.01, 2.9, 6], fov: 33 }}>
       <color attach="background" args={['#2b1f1b']} />
-      <ambientLight intensity={0.74} />
+      <ambientLight intensity={0.72} />
       <spotLight
-        intensity={1.4}
-        angle={0.36}
-        penumbra={0.48}
+        intensity={1.1}
+        angle={0.34}
+        penumbra={0.52}
         castShadow
-        position={[0.9, 6, 1.2]}
+        position={[2.5, 5.2, 3.4]}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
-      <directionalLight intensity={0.85} position={[-1.5, 3.2, -1.2]} />
+      <directionalLight intensity={0.7} position={[-2.2, 3.4, -1.5]} />
 
-      <group position={[0, -0.06, 0]}>
-        <RecordPlayer loadedTrack={loadedTrack} isSpinning={loadingTrackId === null} />
+      <group position={[0, -0.06, 0]} rotation={[0, 0, 0]}>
+        <RecordPlayer loadedTrack={loadedTrack} isSpinning={true} />
         <VinylStack
           tracks={tracks}
           loadedTrackId={loadedTrackId}
-          loadingTrackId={loadingTrackId}
-          onTrackSelect={(trackId) => {
-            if (trackId === loadedTrackId || trackId === loadingTrackId) return
-            setLoadingTrackId(trackId)
-          }}
+          onTrackSelect={onLoadedTrackChange}
         />
       </group>
 
