@@ -19,7 +19,7 @@ export const vinylTracks: VinylTrack[] = [
       'Focused on UX clarity, quality, and performance',
       'Open to impactful roles and mission-aligned teams',
     ],
-    labelAsset: '/assets/labels/about.svg',
+    labelAsset: '/assets/labels/about2.svg',
   },
   {
     id: 'projects',
@@ -32,7 +32,7 @@ export const vinylTracks: VinylTrack[] = [
       'Attention to accessibility and maintainability',
       'Strong visual polish and interaction quality',
     ],
-    labelAsset: '/assets/labels/projects.svg',
+    labelAsset: '/assets/labels/projects2.svg',
   },
   {
     id: 'experience',
@@ -45,7 +45,7 @@ export const vinylTracks: VinylTrack[] = [
       'Partnered deeply with design and analytics',
       'Built reusable systems to improve team velocity',
     ],
-    labelAsset: '/assets/labels/experience.svg',
+    labelAsset: '/assets/labels/experience2.svg',
   },
   {
     id: 'contact',
@@ -58,6 +58,6 @@ export const vinylTracks: VinylTrack[] = [
       'GitHub and LinkedIn links',
       'Open to freelance and full-time opportunities',
     ],
-    labelAsset: '/assets/labels/contact.svg',
+    labelAsset: '/assets/labels/contact2.svg',
   },
 ]

@@ -19,18 +19,18 @@ export function RecordPlayer({ loadedTrack, isSpinning }: RecordPlayerProps) {
   })
 
   return (
-    <group position={[0, -0.56, 0]}>
+    <group position={[0, -0.56, -0.5]}>
       <mesh castShadow receiveShadow>
-        <boxGeometry args={[3.6, 0.26, 2.62]} />
+        <boxGeometry args={[3, 0.26, 2.62]} />
         <meshStandardMaterial color="#7a4f38" metalness={0.1} roughness={0.75} />
       </mesh>
 
       <mesh position={[0, 0.14, 0]} receiveShadow>
-        <boxGeometry args={[3.35, 0.08, 2.36]} />
+        <boxGeometry args={[2.7, 0.08, 2.36]} />
         <meshStandardMaterial color="#e6d8bd" metalness={0.06} roughness={0.88} />
       </mesh>
 
-      <mesh position={[0, 0.85, -1.22]} rotation={[0, 0, 0.02]}>
+      {/* <mesh position={[0, 0.85, -1.22]} rotation={[0, 0, 0.02]}>
         <boxGeometry args={[3.42, 0.02, 0.94]} />
         <meshStandardMaterial
           color="#d4def0"
@@ -39,14 +39,14 @@ export function RecordPlayer({ loadedTrack, isSpinning }: RecordPlayerProps) {
           metalness={0.1}
           roughness={0.15}
         />
-      </mesh>
+      </mesh> */}
 
-      <mesh position={[-0.62, 0.2, 0]} castShadow receiveShadow>
+      <mesh position={[-0.32, 0.2, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.92, 0.92, 0.08, 100]} />
         <meshStandardMaterial color="#222227" metalness={0.4} roughness={0.34} />
       </mesh>
 
-      <group ref={spinningRecordRef} position={[-0.62, 0.28, 0]}>
+      <group ref={spinningRecordRef} position={[-0.32, 0.28, 0]}>
         <mesh castShadow>
           <cylinderGeometry args={[0.82, 0.82, 0.035, 100]} />
           <meshStandardMaterial color="#0e0e12" metalness={0.22} roughness={0.28} />
@@ -67,7 +67,7 @@ export function RecordPlayer({ loadedTrack, isSpinning }: RecordPlayerProps) {
           <meshBasicMaterial map={labelTexture} transparent />
         </mesh>
 
-        <ArcLabelText text={loadedTrack.title} radius={0.11} y={0.031} />
+        <ArcLabelText text={loadedTrack.title} radius={0.16} y={0.031} />
 
         <mesh position={[0, 0.032, 0]} castShadow>
           <cylinderGeometry args={[0.03, 0.03, 0.04, 24]} />
@@ -75,7 +75,7 @@ export function RecordPlayer({ loadedTrack, isSpinning }: RecordPlayerProps) {
         </mesh>
       </group>
 
-      <group position={[0.97, 0.26, -0.53]}>
+      <group position={[0.87, 0.26, -0.63]}>
         <mesh position={[0, 0, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.34, 0.34, 0.06, 60]} />
           <meshStandardMaterial color="#2a2a30" metalness={0.4} roughness={0.32} />
@@ -87,14 +87,14 @@ export function RecordPlayer({ loadedTrack, isSpinning }: RecordPlayerProps) {
         </mesh>
 
         <mesh position={[0, 0.1, 0]} castShadow>
-          <cylinderGeometry args={[0.08, 0.08, 0.06, 40]} />
+          <cylinderGeometry args={[0.08, 0.08, 0.56, 40]} />
           <meshStandardMaterial color="#d8d8db" metalness={0.7} roughness={0.2} />
         </mesh>
       </group>
 
-      <group position={[0.97, 0.34, -0.52]} rotation={[0, 0, -0.5]}>
+      {/* <group position={[0.97, 0.34, -0.52]} rotation={[0, 0, -0.5]}>
         <mesh castShadow>
-          <cylinderGeometry args={[0.03, 0.03, 1.18, 24]} />
+          <cylinderGeometry args={[0.03, 0.03, 0.38, 40]} />
           <meshStandardMaterial color="#c6c8cc" metalness={0.78} roughness={0.21} />
         </mesh>
 
@@ -102,11 +102,24 @@ export function RecordPlayer({ loadedTrack, isSpinning }: RecordPlayerProps) {
           <boxGeometry args={[0.29, 0.045, 0.07]} />
           <meshStandardMaterial color="#454851" metalness={0.45} roughness={0.34} />
         </mesh>
+      </group> */}
+
+      <group position={[0.53, 0.72, -0.07]} rotation={[5, 0, -0.5]}>
+
+        <mesh castShadow>
+          <cylinderGeometry args={[0.03, 0.03, 1.1, 24]} />
+          <meshStandardMaterial color="#c6c8cc" metalness={0.78} roughness={0.21} />
+        </mesh>
+
+        {/* <mesh position={[0.36, -0.48, 0]} rotation={[0, 0, 0.18]} castShadow>
+          <boxGeometry args={[0.29, 0.045, 0.07]} />
+          <meshStandardMaterial color="#454851" metalness={0.45} roughness={0.34} />
+        </mesh> */}
       </group>
 
-      <ControlKnob position={[1.25, 0.21, 0.58]} />
-      <ControlKnob position={[1.25, 0.21, 0.13]} />
-      <HtmlTrackLabel title={loadedTrack.title} />
+      <ControlKnob position={[0.95, 0.21, 0.58]} />
+      <ControlKnob position={[0.95, 0.21, 0.13]} />
+      {/* <HtmlTrackLabel title={loadedTrack.title} /> */}
     </group>
   )
 }
@@ -115,10 +128,10 @@ function ArcLabelText({ text, radius, y }: { text: string; radius: number; y: nu
   const chars = text.toUpperCase().split('')
   const safeChars = chars.length ? chars : ['T']
   const maxSpan = Math.PI * 0.95
-  const baseFontSize = 0.046
+  const baseFontSize = 0.07
   const minFontSize = 0.027
   const glyphWidthFactor = 0.62
-  const minGap = 0.014
+  const minGap = 0.02
   const baseGap = 0.02
 
   const charCount = safeChars.length
@@ -153,7 +166,7 @@ function ArcLabelText({ text, radius, y }: { text: string; radius: number; y: nu
             anchorY="middle"
             color="#fff7ef"
             outlineWidth={0.006}
-            outlineColor="#24170f"
+            outlineColor="#fff7ef"
           >
             {char}
           </Text>
@@ -163,24 +176,24 @@ function ArcLabelText({ text, radius, y }: { text: string; radius: number; y: nu
   )
 }
 
-function HtmlTrackLabel({ title }: { title: string }) {
-  return (
-    <group position={[1.08, 0.19, 0.92]}>
-      <mesh>
-        <boxGeometry args={[0.86, 0.2, 0.02]} />
-        <meshStandardMaterial color="#dfd4ba" roughness={0.86} metalness={0.1} />
-      </mesh>
-      <mesh position={[0, 0.045, 0.012]}>
-        <planeGeometry args={[0.7, 0.04]} />
-        <meshBasicMaterial color="#8f887a" />
-      </mesh>
-      <mesh position={[0, -0.02, 0.012]}>
-        <planeGeometry args={[0.64, 0.06]} />
-        <meshBasicMaterial color={title === 'Contact' ? '#b9d8ff' : '#e8b8a8'} />
-      </mesh>
-    </group>
-  )
-}
+// function HtmlTrackLabel({ title }: { title: string }) {
+//   return (
+//     <group position={[1.08, 0.19, 0.92]}>
+//       <mesh>
+//         <boxGeometry args={[0.86, 0.2, 0.02]} />
+//         <meshStandardMaterial color="#dfd4ba" roughness={0.86} metalness={0.1} />
+//       </mesh>
+//       <mesh position={[0, 0.045, 0.012]}>
+//         <planeGeometry args={[0.7, 0.04]} />
+//         <meshBasicMaterial color="#8f887a" />
+//       </mesh>
+//       <mesh position={[0, -0.02, 0.012]}>
+//         <planeGeometry args={[0.64, 0.06]} />
+//         <meshBasicMaterial color={title === 'Contact' ? '#b9d8ff' : '#e8b8a8'} />
+//       </mesh>
+//     </group>
+//   )
+// }
 
 function ControlKnob({ position }: { position: [number, number, number] }) {
   return (

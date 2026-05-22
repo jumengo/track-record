@@ -18,7 +18,7 @@ export function TurntableScene({ tracks, loadedTrackId, onLoadedTrackChange }: T
   )
 
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [0.01, 2.9, 6], fov: 33 }}>
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 7, 0.01], fov: 33 }}>
       <color attach="background" args={['#2b1f1b']} />
       <ambientLight intensity={0.72} />
       <spotLight

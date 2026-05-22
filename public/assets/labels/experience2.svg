@@ -1,0 +1,11 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="purpleGradient" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#f3e8ff"></stop>
+      <stop offset="100%" stop-color="#cdb4f6"></stop>
+    </radialGradient>
+  </defs>
+
+  <!-- Circle -->
+  <circle cx="200" cy="200" r="170" fill="url(#purpleGradient)"></circle>
+</svg>
