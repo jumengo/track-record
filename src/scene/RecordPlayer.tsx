@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { a, useSpring } from '@react-spring/three'
 import { Text, useTexture } from '@react-three/drei'
@@ -8,7 +8,12 @@ import type { VinylSideId, VinylTrack } from '../data/vinylTracks'
 import { getVinylSide } from '../data/vinylTracks'
 
 const ARC_LABEL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ .'
-preloadFont({ characters: ARC_LABEL_CHARS }, () => {})
+const ARC_LABEL_FONT =
+  'https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYMZg.ttf'
+
+export const arcLabelFontReady = new Promise<void>((resolve) => {
+  preloadFont({ font: ARC_LABEL_FONT, characters: ARC_LABEL_CHARS }, resolve)
+})
 
 const TONEARM_ARM_ROTATION: [number, number, number] = [5, 0, 0]
 const TONEARM_REST_SPIN_Y = -0.5
@@ -178,6 +183,18 @@ function RecordSpindle() {
 }
 
 function ArcLabelText({ text, radius, y }: { text: string; radius: number; y: number }) {
+  const [fontReady, setFontReady] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    arcLabelFontReady.then(() => {
+      if (!cancelled) setFontReady(true)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   const upperText = text.toUpperCase()
   const chars = upperText.split('')
   const safeChars = chars.length ? chars : ['T']
@@ -202,6 +219,8 @@ function ArcLabelText({ text, radius, y }: { text: string; radius: number; y: nu
   const step = charCount <= 1 ? 0 : usedSpan / gaps
   const start = -usedSpan / 2
 
+  if (!fontReady) return null
+
   return (
     <Suspense fallback={null}>
       <group position={[0, y, 0]} renderOrder={2}>
@@ -216,12 +235,13 @@ function ArcLabelText({ text, radius, y }: { text: string; radius: number; y: nu
               key={`${char}-${index}`}
               position={[x, 0, z]}
               rotation={[-Math.PI / 2, 0, charRotation]}
+              font={ARC_LABEL_FONT}
               fontSize={fontSize}
               characters={ARC_LABEL_CHARS}
               anchorX="center"
               anchorY="middle"
               color="#fff7ef"
-              outlineWidth={0.006}
+              outlineWidth={0.004}
               outlineColor="#fff7ef"
               renderOrder={2}
               material-toneMapped={false}

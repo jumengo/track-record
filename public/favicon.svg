@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Track Record">
+  <rect width="512" height="512" rx="96" fill="#c48872" />
+  <circle cx="256" cy="256" r="228" fill="#0e0e12" />
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#1a1a22" stroke-width="3" opacity="0.55" />
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#1a1a22" stroke-width="2" opacity="0.4" />
+  <circle cx="256" cy="256" r="166" fill="none" stroke="#1a1a22" stroke-width="2" opacity="0.32" />
+  <circle cx="256" cy="256" r="118" fill="#c08263" />
+  <circle cx="256" cy="256" r="94" fill="#d08f70" />
+  <circle cx="256" cy="256" r="16" fill="#0e0e12" />
+  <circle cx="256" cy="256" r="9" fill="#4f4a49" />
+  <g
+    fill="#fff7ef"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="30"
+    font-weight="700"
+    letter-spacing="0.08em"
+  >
+    <text x="172.4" y="197.5" transform="rotate(305 172.4 197.5)" text-anchor="middle" dominant-baseline="middle">I</text>
+    <text x="182" y="185.8" transform="rotate(313.5 182 185.8)" text-anchor="middle" dominant-baseline="middle">N</text>
+    <text x="205.6" y="167.3" transform="rotate(330.4 205.6 167.3)" text-anchor="middle" dominant-baseline="middle">P</text>
+    <text x="219.2" y="160.9" transform="rotate(338.8 219.2 160.9)" text-anchor="middle" dominant-baseline="middle">R</text>
+    <text x="233.6" y="156.5" transform="rotate(347.3 233.6 156.5)" text-anchor="middle" dominant-baseline="middle">O</text>
+    <text x="248.5" y="154.3" transform="rotate(355.8 248.5 154.3)" text-anchor="middle" dominant-baseline="middle">G</text>
+    <text x="263.5" y="154.3" transform="rotate(364.2 263.5 154.3)" text-anchor="middle" dominant-baseline="middle">R</text>
+    <text x="278.4" y="156.5" transform="rotate(372.7 278.4 156.5)" text-anchor="middle" dominant-baseline="middle">E</text>
+    <text x="292.8" y="160.9" transform="rotate(381.2 292.8 160.9)" text-anchor="middle" dominant-baseline="middle">S</text>
+    <text x="306.4" y="167.3" transform="rotate(389.6 306.4 167.3)" text-anchor="middle" dominant-baseline="middle">S</text>
+    <text x="318.9" y="175.7" transform="rotate(398.1 318.9 175.7)" text-anchor="middle" dominant-baseline="middle">.</text>
+    <text x="330" y="185.8" transform="rotate(406.5 330 185.8)" text-anchor="middle" dominant-baseline="middle">.</text>
+    <text x="339.6" y="197.5" transform="rotate(415 339.6 197.5)" text-anchor="middle" dominant-baseline="middle">.</text>
+  </g>
+</svg>

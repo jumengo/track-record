@@ -1,9 +1,9 @@
-import { Suspense, useLayoutEffect, useMemo } from 'react'
-import { Canvas, useThree } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Environment, useProgress } from '@react-three/drei'
 import type { OrthographicCamera } from 'three'
 import type { VinylSideId, VinylTrack } from '../data/vinylTracks'
-import { RecordPlayer } from './RecordPlayer'
+import { RecordPlayer, arcLabelFontReady } from './RecordPlayer'
 import { VinylStack } from './VinylStack'
 
 type TurntableSceneFullProps = {
@@ -81,7 +81,40 @@ function SceneAtmosphere() {
   )
 }
 
+function SceneReadySignal({ onReady }: { onReady: () => void }) {
+  const { active } = useProgress()
+  const [fontLoaded, setFontLoaded] = useState(false)
+  const framesAfterReady = useRef(0)
+  const signaled = useRef(false)
+
+  useEffect(() => {
+    let cancelled = false
+    arcLabelFontReady.then(() => {
+      if (!cancelled) setFontLoaded(true)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useFrame(() => {
+    if (signaled.current || !fontLoaded || active) {
+      framesAfterReady.current = 0
+      return
+    }
+
+    framesAfterReady.current += 1
+    if (framesAfterReady.current >= 2) {
+      signaled.current = true
+      onReady()
+    }
+  })
+
+  return null
+}
+
 export function TurntableScene(props: TurntableSceneProps) {
+  const [isReady, setIsReady] = useState(false)
   const isLanding = props.mode === 'landing'
 
   const loadedTrack = useMemo(() => {
@@ -104,47 +137,54 @@ export function TurntableScene(props: TurntableSceneProps) {
   )
 
   return (
-    <Canvas
-      shadows
-      dpr={[1, 2]}
-      orthographic={isLanding}
-      camera={
-        isLanding
-          ? { zoom: cameraZoom, near: 0.1, far: 100, position: [0, 10, 0] }
-          : { fov: 32, near: 0.1, far: 100 }
+    <div
+      className={
+        isReady ? 'turntable-scene-wrap turntable-scene-wrap--ready' : 'turntable-scene-wrap'
       }
-      gl={{ alpha: false }}
     >
-      <TopDownCamera distance={cameraDistance} target={cameraTarget} zoom={cameraZoom} />
-      <color attach="background" args={[sceneBackground]} />
+      <Canvas
+        shadows
+        dpr={[1, 2]}
+        orthographic={isLanding}
+        camera={
+          isLanding
+            ? { zoom: cameraZoom, near: 0.1, far: 100, position: [0, 10, 0] }
+            : { fov: 32, near: 0.1, far: 100 }
+        }
+        gl={{ alpha: false }}
+      >
+        <SceneReadySignal onReady={() => setIsReady(true)} />
+        <TopDownCamera distance={cameraDistance} target={cameraTarget} zoom={cameraZoom} />
+        <color attach="background" args={[sceneBackground]} />
 
-      <Suspense fallback={null}>
-        <SceneAtmosphere />
-      </Suspense>
+        <Suspense fallback={null}>
+          <SceneAtmosphere />
+        </Suspense>
 
-      <group position={[0, -0.06, 0]}>
-        <RecordPlayer
-          loadedTrack={loadedTrack}
-          loadedSideId={loadedSideId}
-          vinylCenterText={vinylCenterText}
-          isSpinning={isSpinning}
-          onTonearmEngagedChange={
-            isLanding ? props.onTonearmEngagedChange : undefined
-          }
-        />
-        {showVinylStack && !isLanding ? (
-          <VinylStack
-            tracks={props.tracks}
-            loadedTrackId={props.loadedTrackId}
-            onTrackSelect={props.onLoadedTrackChange}
+        <group position={[0, -0.06, 0]}>
+          <RecordPlayer
+            loadedTrack={loadedTrack}
+            loadedSideId={loadedSideId}
+            vinylCenterText={vinylCenterText}
+            isSpinning={isSpinning}
+            onTonearmEngagedChange={
+              isLanding ? props.onTonearmEngagedChange : undefined
+            }
           />
-        ) : null}
-      </group>
+          {showVinylStack && !isLanding ? (
+            <VinylStack
+              tracks={props.tracks}
+              loadedTrackId={props.loadedTrackId}
+              onTrackSelect={props.onLoadedTrackChange}
+            />
+          ) : null}
+        </group>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.8, 0]} receiveShadow>
-        <planeGeometry args={[5.5, 5.5]} />
-        <meshStandardMaterial color="#8f5a44" roughness={0.92} />
-      </mesh>
-    </Canvas>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.8, 0]} receiveShadow>
+          <planeGeometry args={[5.5, 5.5]} />
+          <meshStandardMaterial color="#8f5a44" roughness={0.92} />
+        </mesh>
+      </Canvas>
+    </div>
   )
 }
