@@ -1,8 +1,6 @@
-body:has(.landing-shell) {
-  min-width: var(--scene-max-width);
-}
-
 .landing-shell {
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,7 +13,8 @@ body:has(.landing-shell) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: var(--scene-max-width);
+  width: 100%;
+  max-width: var(--scene-max-width);
   gap: 0.25rem;
 }
 

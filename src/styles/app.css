@@ -18,7 +18,6 @@
 
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
   background-color: var(--scene-bg);
 }
@@ -43,6 +42,7 @@ body {
 
 .app-shell {
   width: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 1.8rem 1.2rem 5.5rem;
 }
@@ -377,6 +377,9 @@ body {
   .player-bar {
     grid-template-columns: 1fr;
     gap: 0.55rem;
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 1rem;
     padding-bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
   }
 
