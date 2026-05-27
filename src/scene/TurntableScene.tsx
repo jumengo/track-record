@@ -1,25 +1,62 @@
-import { useMemo } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Suspense, useLayoutEffect, useMemo } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
-import type { VinylTrack } from '../data/vinylTracks'
+import type { OrthographicCamera } from 'three'
+import type { VinylSideId, VinylTrack } from '../data/vinylTracks'
 import { RecordPlayer } from './RecordPlayer'
 import { VinylStack } from './VinylStack'
 
-type TurntableSceneProps = {
+type TurntableSceneFullProps = {
+  mode?: 'full'
+  showVinylStack?: boolean
   tracks: VinylTrack[]
   loadedTrackId: string
+  sideByTrackId: Record<string, VinylSideId>
+  isPlaying: boolean
   onLoadedTrackChange: (trackId: string) => void
 }
 
-export function TurntableScene({ tracks, loadedTrackId, onLoadedTrackChange }: TurntableSceneProps) {
-  const loadedTrack = useMemo(
-    () => tracks.find((track) => track.id === loadedTrackId) ?? tracks[0],
-    [loadedTrackId, tracks],
-  )
+type TurntableSceneLandingProps = {
+  mode: 'landing'
+  vinylCenterText?: string
+  isSpinning?: boolean
+  onTonearmEngagedChange?: (engaged: boolean) => void
+}
 
+export type TurntableSceneProps = TurntableSceneFullProps | TurntableSceneLandingProps
+
+const SCENE_BG = '#c48872'
+
+function TopDownCamera({
+  distance,
+  target = [0, 0, 0],
+  zoom,
+}: {
+  distance: number
+  target?: [number, number, number]
+  zoom?: number
+}) {
+  const camera = useThree((state) => state.camera)
+  const size = useThree((state) => state.size)
+
+  useLayoutEffect(() => {
+    camera.up.set(0, 0, -1)
+    camera.position.set(0, distance, 0)
+    camera.lookAt(...target)
+
+    if (zoom != null && (camera as OrthographicCamera).isOrthographicCamera) {
+      ;(camera as OrthographicCamera).zoom = zoom
+    }
+
+    camera.updateProjectionMatrix()
+  }, [camera, distance, target, zoom, size.width, size.height])
+
+  return null
+}
+
+function SceneLighting() {
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 7, 0.01], fov: 33 }}>
-      <color attach="background" args={['#2b1f1b']} />
+    <>
       <ambientLight intensity={0.72} />
       <spotLight
         intensity={1.1}
@@ -31,22 +68,83 @@ export function TurntableScene({ tracks, loadedTrackId, onLoadedTrackChange }: T
         shadow-mapSize-height={1024}
       />
       <directionalLight intensity={0.7} position={[-2.2, 3.4, -1.5]} />
+    </>
+  )
+}
 
-      <group position={[0, -0.06, 0]} rotation={[0, 0, 0]}>
-        <RecordPlayer loadedTrack={loadedTrack} isSpinning={true} />
-        <VinylStack
-          tracks={tracks}
-          loadedTrackId={loadedTrackId}
-          onTrackSelect={onLoadedTrackChange}
+function SceneAtmosphere() {
+  return (
+    <>
+      <SceneLighting />
+      <Environment preset="city" />
+    </>
+  )
+}
+
+export function TurntableScene(props: TurntableSceneProps) {
+  const isLanding = props.mode === 'landing'
+
+  const loadedTrack = useMemo(() => {
+    if (isLanding) return undefined
+    return (
+      props.tracks.find((track) => track.id === props.loadedTrackId) ?? props.tracks[0]
+    )
+  }, [isLanding, props])
+
+  const loadedSideId = isLanding ? 'a' : (props.sideByTrackId[props.loadedTrackId] ?? 'a')
+  const isSpinning = isLanding ? (props.isSpinning ?? true) : props.isPlaying
+  const vinylCenterText = isLanding ? (props.vinylCenterText ?? 'In progress...') : undefined
+  const showVinylStack = !isLanding && (props.showVinylStack ?? true)
+  const sceneBackground = isLanding ? SCENE_BG : '#2b1f1b'
+  const cameraDistance = isLanding ? 10 : 6
+  const cameraZoom = isLanding ? 108 : undefined
+  const cameraTarget = useMemo<[number, number, number]>(
+    () => (isLanding ? [0, 0, -0.5] : [0, 0, 0]),
+    [isLanding],
+  )
+
+  return (
+    <Canvas
+      shadows
+      dpr={[1, 2]}
+      orthographic={isLanding}
+      camera={
+        isLanding
+          ? { zoom: cameraZoom, near: 0.1, far: 100, position: [0, 10, 0] }
+          : { fov: 32, near: 0.1, far: 100 }
+      }
+      gl={{ alpha: false }}
+    >
+      <TopDownCamera distance={cameraDistance} target={cameraTarget} zoom={cameraZoom} />
+      <color attach="background" args={[sceneBackground]} />
+
+      <Suspense fallback={null}>
+        <SceneAtmosphere />
+      </Suspense>
+
+      <group position={[0, -0.06, 0]}>
+        <RecordPlayer
+          loadedTrack={loadedTrack}
+          loadedSideId={loadedSideId}
+          vinylCenterText={vinylCenterText}
+          isSpinning={isSpinning}
+          onTonearmEngagedChange={
+            isLanding ? props.onTonearmEngagedChange : undefined
+          }
         />
+        {showVinylStack && !isLanding ? (
+          <VinylStack
+            tracks={props.tracks}
+            loadedTrackId={props.loadedTrackId}
+            onTrackSelect={props.onLoadedTrackChange}
+          />
+        ) : null}
       </group>
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.8, 0]} receiveShadow>
-        <planeGeometry args={[14, 14]} />
+        <planeGeometry args={[5.5, 5.5]} />
         <meshStandardMaterial color="#8f5a44" roughness={0.92} />
       </mesh>
-
-      <Environment preset="city" />
     </Canvas>
   )
 }

@@ -13,7 +13,7 @@ const TABLE_SURFACE_Y = 0.009
 
 export function VinylStack({ tracks, loadedTrackId, onTrackSelect }: VinylStackProps) {
   return (
-    <group position={[-1.7, -0.731, 2]}>
+    <group position={[-1.1, -0.731, 1.7]}>
       {tracks.map((track, index) => (
         <StackVinyl
           key={track.id}
@@ -36,9 +36,12 @@ type StackVinylProps = {
 
 function StackVinyl({ track, stackIndex, isActive, onSelect }: StackVinylProps) {
   const [hovered, setHovered] = useState(false)
-  const labelTexture = useMemo(() => new TextureLoader().load(track.labelAsset), [track.labelAsset])
+  const labelTexture = useMemo(
+    () => new TextureLoader().load(track.sides.a.labelAsset),
+    [track.sides.a.labelAsset],
+  )
   const x = stackIndex * 1.08
-  const baseZ = stackIndex % 2 === 0 ? 0 : 0.16
+  const baseZ = 0
   const yRot = -0.1 + stackIndex * 0.07
   const isRaised = hovered || isActive
 
@@ -48,7 +51,7 @@ function StackVinyl({ track, stackIndex, isActive, onSelect }: StackVinylProps) 
   })
 
   return (
-    <a.group position-x={x} position-y={TABLE_SURFACE_Y} position-z={z} rotation={[0, yRot, 0]}>
+    <a.group position-x={x} position-y={TABLE_SURFACE_Y} position-z={z} rotation-y={yRot}>
       <mesh
         castShadow
         receiveShadow
@@ -69,14 +72,9 @@ function StackVinyl({ track, stackIndex, isActive, onSelect }: StackVinylProps) 
       </mesh>
 
       <mesh position={[0, 0.011, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.42, 48]} />
+        <planeGeometry args={[0.9, 0.9]} />
         <meshBasicMaterial map={labelTexture} transparent />
       </mesh>
-
-      {/* <mesh position={[-0.17, 0.011, 0.18]} rotation={[-Math.PI / 2, 0, 0]}>
-        <boxGeometry args={[0.28, 0.02, 0.002]} />
-        <meshBasicMaterial color={isActive ? '#1f2b48' : '#374566'} />
-      </mesh> */}
     </a.group>
   )
 }

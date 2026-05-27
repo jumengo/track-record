@@ -1,0 +1,71 @@
+body:has(.landing-shell) {
+  min-width: var(--scene-max-width);
+}
+
+.landing-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.25rem 0 5.5rem;
+}
+
+.landing-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--scene-max-width);
+  gap: 0.25rem;
+}
+
+.landing-scene {
+  width: 100%;
+  height: 480px;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--scene-bg);
+}
+
+.landing-scene > div {
+  width: 100%;
+  height: 100%;
+}
+
+.landing-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: -2.75rem;
+}
+
+.landing-link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: #f5f2ff;
+  background: rgba(18, 15, 26, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.landing-link:hover {
+  background: rgba(18, 15, 26, 0.62);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.landing-link:active {
+  transform: scale(0.96);
+}
+
+.landing-link svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
